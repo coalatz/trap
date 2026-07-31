@@ -34,11 +34,11 @@
     let activeIndex = 0;
     let scrollFrame = 0;
 
-    totalLabel.textContent = String(slides.length).padStart(2, '0');
+    if(totalLabel) totalLabel.textContent = String(slides.length).padStart(2, '0');
 
     function updateCarousel(index){
       activeIndex = Math.max(0, Math.min(index, slides.length - 1));
-      currentLabel.textContent = String(activeIndex + 1).padStart(2, '0');
+      if(currentLabel) currentLabel.textContent = String(activeIndex + 1).padStart(2, '0');
       prevButton.disabled = activeIndex === 0;
       nextButton.disabled = activeIndex === slides.length - 1;
       slides.forEach((slide, slideIndex)=>{
@@ -86,3 +86,17 @@
     updateCarousel(0);
   }
 
+// ---- SoundCloud Background Music ----
+if (window.self === window.top) {
+  let widget = SC.Widget(document.getElementById('sc-player'));
+  
+  function startMusic() {
+    if (widget) {
+      widget.play();
+      document.removeEventListener('click', startMusic);
+      document.removeEventListener('touchstart', startMusic);
+    }
+  }
+  document.addEventListener('click', startMusic);
+  document.addEventListener('touchstart', startMusic);
+}

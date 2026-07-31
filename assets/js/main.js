@@ -297,16 +297,25 @@ var LOGO_DATA_URI = "assets/images/main_img_1.png";
 
     var flash = document.getElementById("flash");
     var ui = document.getElementById("ui");
-    var skip = document.getElementById("skip-link");
     ui.style.transition = "opacity 0.4s ease";
     ui.style.opacity = "0";
-    skip.style.transition = "opacity 0.4s ease";
-    skip.style.opacity = "0";
 
     if (reduceMotion) {
       flash.style.transition = "opacity 0.6s ease";
       flash.style.opacity = "1";
-      setTimeout(function () { window.location.href = REDIRECT_URL; }, 650);
+      setTimeout(function () { 
+        var iframe = document.createElement('iframe');
+        iframe.src = REDIRECT_URL;
+        iframe.style.position = 'absolute';
+        iframe.style.top = '0';
+        iframe.style.left = '0';
+        iframe.style.width = '100vw';
+        iframe.style.height = '100vh';
+        iframe.style.border = 'none';
+        iframe.style.zIndex = '999999';
+        document.body.appendChild(iframe);
+        setTimeout(function() { document.getElementById('flash').style.display = 'none'; }, 100);
+      }, 650);
       return;
     }
 
@@ -331,7 +340,25 @@ var LOGO_DATA_URI = "assets/images/main_img_1.png";
       if (t < 1) {
         requestAnimationFrame(flyThrough);
       } else {
-        window.location.href = REDIRECT_URL;
+        // Criando iframe para carregar a página sem parar a música
+        var iframe = document.createElement('iframe');
+        iframe.src = REDIRECT_URL;
+        iframe.style.position = 'absolute';
+        iframe.style.top = '0';
+        iframe.style.left = '0';
+        iframe.style.width = '100vw';
+        iframe.style.height = '100vh';
+        iframe.style.border = 'none';
+        iframe.style.zIndex = '999999';
+        
+        document.body.appendChild(iframe);
+        
+        // Remove os canvases para poupar memória
+        setTimeout(function() {
+          document.getElementById('scene-canvas').style.display = 'none';
+          document.getElementById('fx-canvas').style.display = 'none';
+          document.getElementById('flash').style.display = 'none';
+        }, 100);
       }
     }
     requestAnimationFrame(flyThrough);
@@ -343,11 +370,6 @@ var LOGO_DATA_URI = "assets/images/main_img_1.png";
     e.preventDefault();
     startTransition();
   }, { passive: false });
-  document.getElementById("skip-link").addEventListener("click", function (e) {
-    e.stopPropagation();
-    startTransition();
-  });
-
   window.addEventListener("keydown", function (e) {
     if (e.key === "Enter" || e.key === " ") startTransition();
   });
@@ -415,5 +437,19 @@ var LOGO_DATA_URI = "assets/images/main_img_1.png";
 
   animate();
 })();
+
+// ---- SoundCloud Background Music ----
+let widget = SC.Widget(document.getElementById('sc-player'));
+
+function startMusic() {
+  if (widget) {
+    widget.play();
+    sessionStorage.setItem("musicPlaying", "true");
+    document.removeEventListener('click', startMusic);
+    document.removeEventListener('touchstart', startMusic);
+  }
+}
+document.addEventListener('click', startMusic);
+document.addEventListener('touchstart', startMusic);
 
 
