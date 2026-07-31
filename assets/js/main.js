@@ -144,7 +144,7 @@ var LOGO_DATA_URI = "assets/images/main_img_1.png";
   var LOGO_ASPECT = 1; // square image - will auto-correct after load
   var logoMesh = null;
 
-  loader.load("logo.png", function (tex) {
+  loader.load(LOGO_DATA_URI, function (tex) {
     tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
     var cameraAspect = window.innerWidth / window.innerHeight;
@@ -170,7 +170,7 @@ var LOGO_DATA_URI = "assets/images/main_img_1.png";
 
     onAssetsReady();
   }, undefined, function (error) {
-    console.error("Erro ao carregar logo.png:", error);
+    console.error("Erro ao carregar a logo do portal:", error);
     onAssetsReady();
   });
 
