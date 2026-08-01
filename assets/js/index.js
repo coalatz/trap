@@ -104,4 +104,14 @@ if (window.self === window.top) {
   }
   document.addEventListener('click', startMusic);
   document.addEventListener('touchstart', startMusic);
+
+  document.addEventListener("visibilitychange", function() {
+    if (bgMusic) {
+      if (document.hidden) {
+        bgMusic.pause();
+      } else if (sessionStorage.getItem("musicPlaying") === "true") {
+        bgMusic.play().catch(function(e){});
+      }
+    }
+  });
 }

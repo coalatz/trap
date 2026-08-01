@@ -213,6 +213,16 @@ var LOGO_DATA_URI = "assets/images/main_img_1.png";
   document.body.addEventListener('click', startMusic);
   document.body.addEventListener('touchstart', startMusic);
 
+  document.addEventListener("visibilitychange", function() {
+    if (bgMusic) {
+      if (document.hidden) {
+        bgMusic.pause();
+      } else if (sessionStorage.getItem("musicPlaying") === "true") {
+        bgMusic.play().catch(function(e){});
+      }
+    }
+  });
+
   // safety net in case texture takes too long / fails silently
   setTimeout(onAssetsReady, 4000);
 
