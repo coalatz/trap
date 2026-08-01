@@ -178,17 +178,37 @@ var LOGO_DATA_URI = "assets/images/main_img_1.png";
      Loader dismissal
   --------------------------------------------------------------------- */
   var ready = false;
-  function onAssetsReady() {
+  var assetsReady = false;
+  var scReady = false;
+
+  function tryShowUi() {
     if (ready) return;
-    ready = true;
-    var loaderEl = document.getElementById("loader");
-    requestAnimationFrame(function () {
+    if (assetsReady && scReady) {
+      ready = true;
+      var loaderEl = document.getElementById("loader");
       requestAnimationFrame(function () {
-        loaderEl.classList.add("hidden");
-        setTimeout(function () { loaderEl.style.display = "none"; }, 950);
+        requestAnimationFrame(function () {
+          loaderEl.classList.add("hidden");
+          setTimeout(function () { loaderEl.style.display = "none"; }, 950);
+        });
       });
-    });
+    }
   }
+
+  function onAssetsReady() {
+    assetsReady = true;
+    tryShowUi();
+  }
+
+  window.onScWidgetReady = function() {
+    scReady = true;
+    tryShowUi();
+  };
+
+  // Fallback in case SoundCloud fails to load or is blocked
+  setTimeout(function() {
+    window.onScWidgetReady();
+  }, 4000);
   // safety net in case texture takes too long / fails silently
   setTimeout(onAssetsReady, 4000);
 
@@ -437,19 +457,3 @@ var LOGO_DATA_URI = "assets/images/main_img_1.png";
 
   animate();
 })();
-
-// ---- SoundCloud Background Music ----
-let widget = SC.Widget(document.getElementById('sc-player'));
-
-function startMusic() {
-  if (widget) {
-    widget.play();
-    sessionStorage.setItem("musicPlaying", "true");
-    document.removeEventListener('click', startMusic);
-    document.removeEventListener('touchstart', startMusic);
-  }
-}
-document.addEventListener('click', startMusic);
-document.addEventListener('touchstart', startMusic);
-
-
