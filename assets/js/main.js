@@ -3,7 +3,7 @@
    TRAPXHOLICX — Space Portal Intro
    Troque REDIRECT_URL abaixo pelo link real do site.
    ========================================================================= */
-window.REDIRECT_URL = "index.html";
+window.REDIRECT_URL = "home.html";
 
 
 var LOGO_DATA_URI = "assets/images/main_img_1.png";
