@@ -200,14 +200,28 @@ var LOGO_DATA_URI = "assets/images/main_img_1.png";
     tryShowUi();
   }
 
-  window.onScWidgetReady = function() {
+  var widget = SC.Widget(document.getElementById('sc-player'));
+  
+  widget.bind(SC.Widget.Events.READY, function() {
     scReady = true;
     tryShowUi();
-  };
+  });
+
+  function startMusic() {
+    if (widget) {
+      widget.play();
+      sessionStorage.setItem("musicPlaying", "true");
+      document.body.removeEventListener('click', startMusic);
+      document.body.removeEventListener('touchstart', startMusic);
+    }
+  }
+  document.body.addEventListener('click', startMusic);
+  document.body.addEventListener('touchstart', startMusic);
 
   // Fallback in case SoundCloud fails to load or is blocked
   setTimeout(function() {
-    window.onScWidgetReady();
+    scReady = true;
+    tryShowUi();
   }, 4000);
   // safety net in case texture takes too long / fails silently
   setTimeout(onAssetsReady, 4000);

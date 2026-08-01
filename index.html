@@ -33,29 +33,10 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <iframe id="sc-player" width="300" height="300" style="position:fixed; top:-9999px; left:-9999px; opacity:0; pointer-events:none;"
-    src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2117203116&auto_play=true&hide_related=true&show_comments=false&visual=false"
+    src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2117203116&auto_play=false&hide_related=true&show_comments=false&visual=false"
     frameborder="no" allow="autoplay; encrypted-media">
   </iframe>
   <script src="https://w.soundcloud.com/player/api.js"></script>
-  <script>
-    var widgetIframe = document.getElementById('sc-player');
-    var widget = SC.Widget(widgetIframe);
-    
-    widget.bind(SC.Widget.Events.READY, function() {
-      if (window.onScWidgetReady) window.onScWidgetReady();
-    });
-
-    function startMusic() {
-      if (widget) {
-        widget.play();
-        sessionStorage.setItem("musicPlaying", "true");
-        document.body.removeEventListener('click', startMusic);
-        document.body.removeEventListener('touchstart', startMusic);
-      }
-    }
-    document.body.addEventListener('click', startMusic);
-    document.body.addEventListener('touchstart', startMusic);
-  </script>
 <script src="assets/js/main.js"></script>
 </body>
 </html>
