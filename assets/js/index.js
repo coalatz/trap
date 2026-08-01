@@ -86,13 +86,18 @@
     updateCarousel(0);
   }
 
-// ---- SoundCloud Background Music ----
+// ---- Background Music ----
 if (window.self === window.top) {
-  let widget = SC.Widget(document.getElementById('sc-player'));
+  var bgMusic = document.getElementById('bg-music');
+  if (bgMusic) {
+    bgMusic.volume = 0.5;
+  }
   
   function startMusic() {
-    if (widget) {
-      widget.play();
+    if (bgMusic) {
+      bgMusic.play().catch(function(err) {
+        console.warn("Audio play blocked:", err);
+      });
       document.removeEventListener('click', startMusic);
       document.removeEventListener('touchstart', startMusic);
     }
